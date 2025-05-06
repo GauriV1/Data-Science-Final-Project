@@ -50,7 +50,7 @@ actual_df    = load_actual()
 
 tickers = sorted(clean_df['Ticker'].unique())
 
--
+
 selected_ticker = st.sidebar.selectbox("Select Ticker", tickers)
 
 # Precompute date bounds
