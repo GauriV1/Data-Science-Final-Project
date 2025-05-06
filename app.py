@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -5,35 +6,25 @@ import plotly.graph_objects as go
 from statsmodels.tsa.arima.model import ARIMA
 from datetime import timedelta
 
-
+BASE_DIR = os.path.dirname(__file__)
 
 st.set_page_config(page_title="Gauri's Final DS Project", layout="wide")
 st.title("Hybrid ARIMA + LSTM Stock Forecast Dashboard")
 
 
-@st.cache_data
 def load_cleaned():
-    """Load cleaned historical OHLC data."""
-    return pd.read_csv(
-        '/content/selected_tickers_clean.csv',
-        parse_dates=['Date']
-    )
+    path = os.path.join(BASE_DIR, "selected_tickers_clean.csv")
+    return pd.read_csv(path, parse_dates=['Date'])
 
 @st.cache_data
 def load_forecasts():
-    """Load combined ARIMA+LSTM forecasts for May 1–5, 2025."""
-    return pd.read_csv(
-        '/content/may1_5_forecasts_v2.csv',
-        parse_dates=['Date']
-    )
+    path = os.path.join(BASE_DIR, "may1_5_forecasts_v2.csv")
+    return pd.read_csv(path, parse_dates=['Date'])
 
 @st.cache_data
 def load_actual():
-    """
-    Load actual May 1–5, 2025 closes from wide-format sheet
-    and melt into long form.
-    """
-    w = pd.read_csv('/content/Actual - Sheet1.csv')
+    path = os.path.join(BASE_DIR, "Actual - Sheet1.csv")
+    w = pd.read_csv(path)
     date_cols = [c for c in w.columns if c != 'Ticker']
     df = w.melt(
         id_vars=['Ticker'],
@@ -43,7 +34,7 @@ def load_actual():
     )
     df['Date'] = pd.to_datetime(df['Date'])
     return df[['Ticker','Date','Actual']]
-
+    
 clean_df     = load_cleaned()
 forecasts_df = load_forecasts()
 actual_df    = load_actual()
