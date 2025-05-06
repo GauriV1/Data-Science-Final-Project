@@ -176,4 +176,4 @@ st.markdown("---")
 st.markdown(
     "**App:** Gauri's Final Data Science Project  |  "
     "Hybrid ARIMA(3,1,5) + LSTM (20-day)  |  6-year history"
-)"""
+)
